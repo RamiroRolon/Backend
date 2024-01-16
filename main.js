@@ -1,14 +1,17 @@
-// 1 Desafio Backend.
+// 2 Desafio Backend.
+
+const fs= require("fs").promises;
 
 class ProductManager {
 
     static ultId = 0;
 
-    constructor() {
+    constructor(path) {
     this.products= [];
+    this.path = path;
 }
 
-addProduct(title, description, price, img, code, stock){
+async addProduct({title, description, price, img, code, stock}){
 
     //Validamos todos los campos
     if(!title || !description || !price || !img || !code || !stock){
@@ -38,39 +41,85 @@ addProduct(title, description, price, img, code, stock){
 
 this.products.push(newProduct);
 
+await this.guardarArchivo(this.products);
 
 }
 
-getProducts() {
-    return this.products;
+async getProducts() {
+    await this.leerArchivo();
 }
 
-getProductById(id) {
-        const product = this.products.find(item => item.id === id) ;
-
-        if(!product) {
-            console.error("Not Found!")
-        } else {
-            console.log(product);
+async getProductById(id) {
+        try {
+            const arrayProductos = await this.leerArchivo();
+            if (item => item.id === id){
+            const buscado = arrayProductos.find(item => item.id === id);
+            return buscado;
+            } else {
+                throw new Error("Product Not Found")
+            }
+        } catch (error) {
+            console.log(error);
         }
 
 }
+
+async updateProduct(productIdToUpdate,updateItems){
+    try {
+        const productIndex = this.products.findIndex (item => item.id === productIdToUpdate)
+        if (productIndex >= 0){
+            if (!Object.keys(updateItems).includes('productID')){
+            this.products[productIndex] = {...this.products[productIndex],...updateItems}
+            await this.guardarArchivo(this.products)
+    }
+    else {
+        throw new Error("No se puede modificar productID")
+    }
+    }
+    } catch (error) {
+        console.log("error", error.message)
+        return null
+    }
 }
 
-// 1
-const manager = new ProductManager();
+async deleteProduct(productIdToDelete){
+    try {
+        if(this.products((item) => item.id ==productIdToDelete)){
+        const productIndex = this.products.findIndex(item => item.id == productIdToDelete);
+        this.products.splice(productIndex)
+        this.guardarArchivo(this.products)
+        }
+        else{
+            throw new Error("No existe el producto con el productID ingresado !!!")
+        }
+    } catch (error) {
+        console.log("error", error.message)
+        return null
+    }
+}
 
-//2
-console.log(manager.getProducts());
+async leerArchivo () {
+    try {
+        const respuesta = await fs.readFile(this.path, "utf-8");
+        const arrayProductos = JSON.parse(respuesta);
+        return arrayProductos;
+    } catch (error) {
+        console.log("error al leer el archivo", error);
+    }
+}
+
+async guardarArchivo (arrayProductos){
+try {
+    await fs.writeFile(this.path, JSON.stringify(arrayProductos, null, 2));
+} catch (error) {
+    console.log("error al leer el archivo", error);
+}
+
+}
+}
 
 
-// 3
 
-manager.addProduct("Producto prueba" , "esto es un producto prueba" , 200, "sin imagen" , "abc123" , 25)
 
-//4
-console.log(manager.getProducts());
 
-//6 
 
-manager.addProduct("Producto prueba" , "esto es un producto prueba" , 200, "sin imagen" , "abc123" , 25)
