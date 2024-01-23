@@ -1,5 +1,3 @@
-// 2 Desafio Backend.
-
 const fs= require("fs").promises;
 
 class ProductManager {
@@ -118,8 +116,4 @@ try {
 }
 }
 
-
-
-
-
-
+module.exports = ProductManager;
