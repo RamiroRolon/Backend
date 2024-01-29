@@ -44,7 +44,7 @@ await this.guardarArchivo(this.products);
 }
 
 async getProducts() {
-    await this.leerArchivo();
+    return await this.leerArchivo();
 }
 
 async getProductById(id) {

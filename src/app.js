@@ -4,7 +4,7 @@ const app = express();
 const PUERTO = 8080;
 
 const ProductManager = require("../src/controllers/product-manager.js");
-const productManager = new ProductManager("../src/models/productos.json");
+const productManager = new ProductManager("./src/models/productos.json");
 
 
 app.use(express.json());
@@ -26,7 +26,7 @@ app.get("/api/products", async (req, res) => {
     }
 
 
-})
+});
 
 app.get("/api/products/:pid", async (req, res) => {
     let id = req.params.pid;
@@ -41,10 +41,23 @@ app.get("/api/products/:pid", async (req, res) => {
             res.json(producto);
         }
     } catch (error) {
-        console.log( "Error al obtener los productos", error);
+        console.log( "Error al obtener el producto", error);
         res.status(500).json ({error: "Error del servidor"});
     }
 
+})
+
+//Agregar producto por post
+
+app.post("/api/products", async (req, res) => {
+    const nuevoProducto = req.body;
+    try {
+        await productManager.addProduct(nuevoProducto),
+        res.status(201).json({message:"Producto agregado exitosamente"});
+    } catch (error) {
+        console.log("Error al agregar un producto", error);
+        res.status(500).json({error:"error del servidor"});
+    }
 })
 
 app.listen(PUERTO);
