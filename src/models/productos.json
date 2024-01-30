@@ -1,88 +1,6 @@
 [
   {
-    "id": 1,
     "title": "Yerba",
-    "description": "la mas rica",
-    "price": "5500",
-    "img": "Con Imagen",
-    "code": "abc133",
-    "stock": "150"
-  },
-  {
-    "title": "Mate",
-    "description": "la mas rica",
-    "price": "5500",
-    "img": "Con Imagen",
-    "code": "abc136",
-    "stock": "150",
-    "category": "Panaderia",
-    "status": true,
-    "thumbnails": [],
-    "id": 1
-  },
-  {
-    "id": 1,
-    "title": "Mate",
-    "description": "la mas rica",
-    "price": "5500",
-    "img": "Con Imagen",
-    "code": "abc136",
-    "stock": "150",
-    "category": "Panaderia",
-    "status": true,
-    "thumbnails": []
-  },
-  {
-    "id": 1,
-    "title": "yerba",
-    "description": "la mas rica",
-    "price": "5500",
-    "img": "Con Imagen",
-    "code": "abc137",
-    "stock": "150",
-    "category": "Panaderia",
-    "status": true,
-    "thumbnails": []
-  },
-  {
-    "id": 1,
-    "title": "yerba",
-    "description": "la mas rica",
-    "price": "5500",
-    "img": "Con Imagen",
-    "code": "abc137",
-    "stock": "150",
-    "category": "Panaderia",
-    "status": true,
-    "thumbnails": []
-  },
-  {
-    "id": 1,
-    "title": "yerba",
-    "description": "la mas rica",
-    "price": "5500",
-    "img": "Con Imagen",
-    "code": "abc137",
-    "stock": "150",
-    "category": "Panaderia",
-    "status": true,
-    "thumbnails": []
-  },
-  {
-    "id": 1,
-    "title": "yerba",
-    "description": "la mas rica",
-    "price": "5500",
-    "img": "Con Imagen",
-    "code": "abc137",
-    "stock": "150",
-    "category": "Panaderia",
-    "status": true,
-    "thumbnails": []
-  },
-  {
-    "id": 1,
-    "title": "Matye",
     "description": "la mas rica",
     "price": "5500",
     "img": "Con Imagen",
@@ -90,18 +8,31 @@
     "stock": "150",
     "category": "PanadAlmaceeria",
     "status": true,
-    "thumbnails": []
+    "thumbnails": [],
+    "id": 1
   },
   {
-    "title": "Yerba",
-    "description": "la mas rica",
-    "price": "5500",
+    "title": "Galletitas",
+    "description": "las mas rica",
+    "price": "500",
     "img": "Con Imagen",
-    "code": "abc139",
+    "code": "abc2",
     "stock": "150",
     "category": "PanadAlmaceeria",
     "status": true,
     "thumbnails": [],
-    "id": 1
+    "id": 2
+  },
+  {
+    "title": "Mate",
+    "description": "Los mejores",
+    "price": "5000",
+    "img": "Con Imagen",
+    "code": "abc3",
+    "stock": "150",
+    "category": "PanadAlmaceeria",
+    "status": true,
+    "thumbnails": [],
+    "id": 3
   }
 ]

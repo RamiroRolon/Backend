@@ -37,7 +37,7 @@ async addProduct({title, description, price, img, code, stock, category, thumbna
         status:true,
         thumbnails: thumbnails || []
     };
-    if (arrayProductos.lenght > 0) {
+    if (arrayProductos.length > 0) {
         ProductManager.ultId = arrayProductos.reduce((maxId, product) => Math.max(maxId, product.id), 0);
     }
     newProduct.id = ++ProductManager.ultId;
