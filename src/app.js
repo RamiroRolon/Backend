@@ -51,6 +51,7 @@ app.get("/api/products/:pid", async (req, res) => {
 
 app.post("/api/products", async (req, res) => {
     const nuevoProducto = req.body;
+    console.log(nuevoProducto);
     try {
         await productManager.addProduct(nuevoProducto),
         res.status(201).json({message:"Producto agregado exitosamente"});
@@ -59,5 +60,20 @@ app.post("/api/products", async (req, res) => {
         res.status(500).json({error:"error del servidor"});
     }
 })
+
+// Actualizamos producto por Id:
+
+app.put("/api/products/:pid", async (req, res) => {
+    let id = req.params.pid;
+    const productoActualizado = req.body;
+
+    try {
+        await productManager.updateProduct(parseInt(id), productoActualizado);
+        res.json({message: "Producto actualizado correctamente"});
+    } catch (error) {
+        console.log("No pudimos actualizar, vamos a morir ", error);
+        res.status(500).json({error: "Error del server"});
+    }
+} )
 
 app.listen(PUERTO);
