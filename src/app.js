@@ -1,79 +1,59 @@
-
 const express = require("express");
 const app = express();
+const exphbs = require("express-handlebars");
+const socket = require("socket.io");
 const PUERTO = 8080;
 
-const ProductManager = require("../src/controllers/product-manager.js");
-const productManager = new ProductManager("./src/models/productos.json");
 
+const productsRouter = require("./routes/products.router.js");
+const cartsRouter = require("./routes/carts.router.js");
+const viewsRouter = require("./routes/views.router.js");
 
+//Middleware
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(express.static("./src/public"));
 
-app.get("/api/products", async (req, res) => {
-    try {
-        const limit = req.query.limit;
-        const productos = await productManager.getProducts();
+//Handlebars
+app.engine("handlebars", exphbs.engine());
+app.set("view engine", "handlebars");
+app.set("views", "./src/views");
 
-        if (limit) {
-            res.json(productos.slice(0, limit));
+//Rutas:
+app.use("/api/products", productsRouter);
+app.use("/api/carts", cartsRouter);
+app.use("/", viewsRouter);
 
-        }else {
-            res.json(productos);
-        }
-    } catch (error) {
-        console.log( "Error al obtener los productos", error);
-        res.status(500).json ({error: "Error del servidor"});
-    }
-
-
+const httpServer = app.listen(PUERTO, () => {
+    console.log(`Servidor escuchando en el puerto ${PUERTO}`);
 });
 
-app.get("/api/products/:pid", async (req, res) => {
-    let id = req.params.pid;
+//Debo obtener el array de productos:
+const ProductManager = require("./controllers/product-manager.js");
+const productManager = new ProductManager("./src/models/productos.json");
 
-    try {
-        const producto = await productManager.getProductById(parseInt(id));
-        if (!producto) {
-            res.json({
-                error:"Producto no encontrado"
-            });
-        } else {
-            res.json(producto);
-        }
-    } catch (error) {
-        console.log( "Error al obtener el producto", error);
-        res.status(500).json ({error: "Error del servidor"});
-    }
+//Creamos el server de Socket.io
+const io = socket(httpServer);
 
+io.on("connection", async (socket) => {
+    console.log("Un cliente se conecto");
+
+    //Enviamos el array de productos al cliente que se conectó.
+    socket.emit("productos", await productManager.getProducts());
+
+    //Recibimos el evento "eliminarProducto" desde el cliente:
+    socket.on("eliminarProducto",  async (id) => {
+        await productManager.deleteProduct(id);
+
+        //Debo enviarle la lista actualizada al cliente:
+        io.sockets.emit("productos", await productManager.getProducts());
+
+    })
+    //Agregar producto:
+    socket.on("agregarProducto", async (producto) => {
+    console.log(producto);
+    await productManager.addProduct(producto);
+    io.sockets.emit("productos", await productManager.getProducts());
 })
 
-//Agregar producto por post
-
-app.post("/api/products", async (req, res) => {
-    const nuevoProducto = req.body;
-    console.log(nuevoProducto);
-    try {
-        await productManager.addProduct(nuevoProducto),
-        res.status(201).json({message:"Producto agregado exitosamente"});
-    } catch (error) {
-        console.log("Error al agregar un producto", error);
-        res.status(500).json({error:"error del servidor"});
-    }
 })
-
-// Actualizamos producto por Id:
-
-app.put("/api/products/:pid", async (req, res) => {
-    let id = req.params.pid;
-    const productoActualizado = req.body;
-
-    try {
-        await productManager.updateProduct(parseInt(id), productoActualizado);
-        res.json({message: "Producto actualizado correctamente"});
-    } catch (error) {
-        console.log("No pudimos actualizar, vamos a morir ", error);
-        res.status(500).json({error: "Error del server"});
-    }
-} )
-
-app.listen(PUERTO);
