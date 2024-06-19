@@ -1,20 +1,24 @@
 {
+  "name": "1--desafio-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon src/server.js"
+  },
+  "author": "",
+  "license": "ISC",
   "dependencies": {
+    "dotenv": "^10.0.0",
     "express": "^4.18.2",
-    "moongoose": "^0.0.5",
+    "mongoose": "^6.0.12",
+    "mongoose-paginate-v2": "^1.3.12",
+    "morgan": "^1.10.0",
     "socket.io": "^4.7.4"
   },
   "devDependencies": {
     "nodemon": "^3.0.3"
-  },
-  "name": "1--desafio-backend",
-  "version": "1.0.0",
-  "main": "product-manager.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon src/app.js"
-  },
-  "author": "",
-  "license": "ISC",
-  "description": ""
+  }
 }
